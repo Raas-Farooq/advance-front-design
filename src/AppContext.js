@@ -10,7 +10,7 @@ const AppContextFun = ({children}) => {
     const [isAboutList, setAboutList] = useState(false);
   
   
-    function handleMouseOver(e){
+    function handleProductsEnter(e){
       e.preventDefault();
       const list = ['Believe', 'Effort', 'MassiveAction', 'Middle Way', 'Be Patient']
       setMyList(['Apples', 'Adversity', 'GoingOn', 'Present']);
@@ -18,13 +18,12 @@ const AppContextFun = ({children}) => {
       console.log("productLIst inside App fun:", isProductList);
     }
   
-    function handleMouseLeave(e){
+    function handleProductsLeave(e){
       e.preventDefault();
       console.log("productLIst handleMouseLeave:", isProductList);
       setProductList(false);
       setMyList([])
-    }
-  
+} 
   
     function handlePaymentEnter(e){
       e.preventDefault();
@@ -57,8 +56,8 @@ const AppContextFun = ({children}) => {
 
 
     return <AppContext.Provider value=
-    {{handleMouseOver, 
-    handleMouseLeave,
+    {{handleProductsEnter, 
+    handleProductsLeave,
     handleAboutEnter,
     handlePaymentEnter,
     handleAboutLeave,

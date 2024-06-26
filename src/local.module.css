@@ -1,28 +1,42 @@
 .App {
+    display:flex;
     text-align: center;
+    position:relative;
+    z-index: 2;
+    margin-top:20px;
+    gap:100px;
   }
   
   .App-logo {
     height: 40vmin;
     pointer-events: none;
   }
-  /* .menuBtn{
-    margin:10px
-  } */
+  .btns{
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap:30px;
+  }
   .list{
     display:flex;
     list-style: none;
     margin-top:0px;
     box-shadow:0 2px 5px;
     width:fit-content;
+    justify-content: center;
+    align-items: center;
     height:100px;
+    margin-left: 20%;
+    background:white
   }
   .checking{
     color: rgb(102, 198, 121);
   }
   .liItem{
     margin-left:20px;
-    margin-top:20px;
+    color:red
+    /* margin-top:20px; */
   }
   @media (prefers-reduced-motion: no-preference) {
     .App-logo {
@@ -31,5 +45,5 @@
   }
   
   .btnGap{
-    margin-right:30px;
+    margin-left:30px;
   }
