@@ -1,45 +1,17 @@
 import logo from './logo.svg';
-import React, {useRef,useState} from 'react';
+import React, {useRef,useState,useContext} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 // import 'bootstrap-icons/font/bootstrap-icons.css';
 import styles from './local.module.css';
+import List from './list';
+import { useGlobalContext } from './AppContext';
 
 function App() {
-
+  const globalData = useGlobalContext();
+  console.log("myData: ", globalData);
   const headingDiv = useRef(null);
-  const [isListAvailable, setIsListAvailable] = useState(false);
-  const [myList, setMyList] = useState([]);
-  const [isAboveList, setIsAboveList] = useState(false);
 
 
-  function handleListEnter(e){
-    e.preventDefault();
-    const list = ['Believe', 'Effort', 'MassiveAction', 'Middle Way', 'Be Patient']
-    setIsAboveList(true);
-    setIsListAvailable(true);
-    console.log("Above List:", isAboveList);
-  }
-
-  function handleListLeave(e){
-    e.preventDefault();
-    setIsListAvailable(false);
-    setIsAboveList(false);
-    console.log("Above List:", isAboveList);
-  }
-
-  function handleMouseOver(e){
-    e.preventDefault();
-    console.log("Running Mouse Over");
-    setIsListAvailable(true);
-    console.log("Above List:", isAboveList);
-  }
-
-  function handleMouseLeave(e){
-    e.preventDefault();
-    console.log("Running Mouse Leave");
-    setIsListAvailable(false)
-
-  }
 
   return (
     <div className={styles.App}>
@@ -47,26 +19,31 @@ function App() {
       <h2>what is Power</h2>
       <div className="btns">
       {/* onMouseLeave={handleHoshLeave} onMouseMove={handleHoshMove} */}
-        <button className={styles.menuBtn + ' btn' + ' btn-danger' }
-        onMouseLeave={handleMouseLeave} 
-        onMouseOver={(e) => handleMouseOver(e)}
-         >Believe</button>
-        <div style={{display:'inline'}}>
-        {isListAvailable && 
-          <ul 
-          className={styles.list} 
-          style={{display:"flex", listStyle:'none'}}
-          onMouseLeave={handleListLeave}
-          onMouseEnter = {handleListEnter} >
-            {myList.map(item => {
-              return <li 
-              key={item} 
-              className={styles.liItem}
-              > {item} </li>
-            })
-          }
-          </ul>}
-        </div>
+        <span>
+          <button className={styles.btnGap + " " + styles.menuBtn + ' btn' + ' btn-danger' }
+          onMouseLeave={globalData.handleMouseLeave} 
+          onMouseOver={(e) => globalData.handleMouseOver(e)}
+          >Products</button>
+          <button className={styles.btnGap + " " + styles.menuBtn + ' btn' + ' btn-danger' }
+          onMouseLeave={globalData.handlePaymentLeave} 
+          onMouseOver={(e) => globalData.handlePaymentEnter(e)}
+          >PayMent</button>
+
+          <button className={styles.btnGap + " " + styles.menuBtn + ' btn' + ' btn-danger' }
+          onMouseLeave={globalData.handleAboutLeave} 
+          onMouseOver={(e) => globalData.handleAboutEnter(e)}
+          >About</button>
+
+          <span style={{display:'inline'}}>
+            <List isProductList={globalData.isProductList}
+             isPaymentList={globalData.isPaymentList}
+             isAboutList={globalData.isAboutList}
+              power={'GoodHealth'} myList={globalData.myList} />
+          </span>
+        </span>
+        
+
+        
       </div>
     </div>
   );

@@ -22,7 +22,7 @@
   }
   .liItem{
     margin-left:20px;
-    
+    margin-top:20px;
   }
   @media (prefers-reduced-motion: no-preference) {
     .App-logo {
@@ -30,3 +30,6 @@
     }
   }
   
+  .btnGap{
+    margin-right:30px;
+  }
