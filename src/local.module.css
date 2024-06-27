@@ -1,7 +1,7 @@
 .App {
     display:flex;
     text-align: center;
-    position:relative;
+    /* position:relative; */
     z-index: 2;
     margin-top:20px;
     gap:100px;
@@ -45,5 +45,5 @@
   }
   
   .btnGap{
-    margin-left:30px;
+    margin-left:35px;
   }
