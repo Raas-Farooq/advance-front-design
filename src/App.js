@@ -3,7 +3,7 @@ import React, {useRef,useState,useContext} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 // import 'bootstrap-icons/font/bootstrap-icons.css';
 import styles from './local.module.css';
-import List from './list';
+import List from './list.js';
 import { useGlobalContext } from './AppContext';
 
 function App() {
