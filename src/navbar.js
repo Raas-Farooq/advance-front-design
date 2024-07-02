@@ -5,46 +5,52 @@ import { useGlobalContext } from './AppContext';
 
 
 function Navbar(){
-
+    
     const globalData = useGlobalContext();
+    const {isAboutList, isPaymentList, isProductList} = globalData;
+    const isActive = isAboutList || isPaymentList || isProductList;
+    console.log("isActive: ", isActive)
+    const linksButtons = [
+        {name:'Products', handleEnter:globalData.handleProductsEnter, handleLeave:globalData.handleProductsLeave},
+        {name:'Payment', handleEnter:globalData.handlePaymentEnter, handleLeave:globalData.handlePaymentLeave},
+        {name:'About', handleEnter:globalData.handleAboutEnter, handleLeave:globalData.handleAboutLeave}
+    ] 
 
     return (
+
         <div className={styles.App}>
             <div className='header'>
-             <h1 style={{color:"yellow"}}> Fight The SATAN</h1>
+            <h1 style={{color:"red"}}> Fight The SATAN</h1>
             </div>
-          
-      
+        
+    
             <div className="btns">
     
-                <span>
-                    <button className={styles.btnGap + " " + styles.menuBtn + ' btn' + ' btn-danger' }
-                        onMouseLeave={globalData.handleProductsLeave} 
-                        onMouseOver={(e) => globalData.handleProductsEnter(e)}
-                    >Products</button>
-                    <button className={styles.btnGap + " " + styles.menuBtn + ' btn' + ' btn-danger' }
-                        onMouseLeave={globalData.handlePaymentLeave} 
-                        onMouseOver={(e) => globalData.handlePaymentEnter(e)}
-                    >PayMent</button>
+            
+                {linksButtons.map(link => 
+                   
+                    <button 
+                    className={`${styles.btnGap} ${styles.menuBtn} btn btn-danger` }
+                    onMouseOver={link.handleEnter}
+                    onMouseLeave={link.handleLeave}
+                    >{link.name}</button>
+                    
+                    
+                )}
 
-                    <button className={styles.btnGap + " " + styles.menuBtn + ' btn' + ' btn-danger' }
-                        onMouseLeave={globalData.handleAboutLeave} 
-                        onMouseOver={(e) => globalData.handleAboutEnter(e)}
-                    >About</button>
-
-                    <span style={{display:'inline'}}>
-                        <List isProductList={globalData.isProductList}
-                        isPaymentList={globalData.isPaymentList}
-                        isAboutList={globalData.isAboutList}
-                        power={'GoodHealth'} myList={globalData.myList} />
-                    </span>
+                <span style={{display:'inline'}}>
+                    {isActive &&  <List isProductList={globalData.isProductList}
+                    myList={globalData.myList} />}
+                    
                 </span>
+                
             </div>
 
             <div>
                 <button > Sign In</button>
             </div>
         </div>
+  
     )
 }
 

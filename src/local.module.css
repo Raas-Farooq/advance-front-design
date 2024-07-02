@@ -1,8 +1,15 @@
 .App {
     display:flex;
     text-align: center;
-    /* position:relative; */
-    z-index: 2;
+    position:relative;
+    /* position:fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+   
+    */
+    z-index: 2; 
     margin-top:20px;
     gap:100px;
   }
@@ -22,20 +29,23 @@
     display:flex;
     list-style: none;
     margin-top:0px;
-    box-shadow:0 2px 5px;
+    box-shadow:0 2px 5px rgba(0,0,0, 0.1);
     width:fit-content;
     justify-content: center;
     align-items: center;
     height:100px;
+    border-radius:5px;
     margin-left: 20%;
-    background:white
+    background-color: white;
+    transition: opacity 0.3s ease;
   }
   .checking{
     color: rgb(102, 198, 121);
   }
   .liItem{
     margin-left:20px;
-    color:red
+    color:red;
+    transition:all 0.3s ease;
     /* margin-top:20px; */
   }
   @media (prefers-reduced-motion: no-preference) {
@@ -45,5 +55,9 @@
   }
   
   .btnGap{
-    margin-left:35px;
+    margin-left:45px;
+  }
+
+  .menuBtn{
+    transition: all 0.3s ease;
   }

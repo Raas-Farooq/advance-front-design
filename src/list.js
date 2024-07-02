@@ -4,23 +4,23 @@ import { useGlobalContext, useState} from './AppContext';
 
 function List(){
     const globalStates = useGlobalContext();
-    // const statesList = [globalStates.isProductList, globalStates.isPaymentList,globalStates.isAboutList];
-    // console.log("globalStates ", globalStates);
-    // for (const state of statesList) {
-    //     if(state){
-    //         console.log("state: ", state)
-    //         return state;
-    //     }
-    // }
-  
+
+    const {isAboutList, isProductList, isPaymentList, myList} = globalStates;
+
+    const stateTrue = isAboutList || isProductList || isPaymentList;
+
+    console.log("stateTrue", stateTrue);
     return (
         <>
             {(globalStates.isProductList || globalStates.isPaymentList || globalStates.isAboutList) && 
             <ul 
                     className={myStyles.list} 
-                    onMouseOver={globalStates.isProductList && globalStates.handleProductsEnter
-                         || globalStates.isPaymentList && globalStates.handlePaymentEnter 
-                         || globalStates.isAboutList && globalStates.handleAboutEnter}
+                    onMouseOver={(e) => {
+                        if(isProductList) globalStates.handleProductsEnter(e);
+                        if(isPaymentList) globalStates.handlePaymentEnter(e);
+                        if(isAboutList) globalStates.handleAboutEnter(e)}
+                    }
+                        
 
                     onMouseLeave={globalStates.isProductList && globalStates.handleProductsLeave
                         || globalStates.isPaymentList && globalStates.handlePaymentLeave 
