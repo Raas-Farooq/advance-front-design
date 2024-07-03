@@ -20,13 +20,13 @@ const AppContextFun = ({children}) => {
       isPaymentList:false, 
       isAboutList:false
     });
-
+    const [isActive, setIsActive] = useState(false);
     const [myList, setMyList] = useState([]);
     const hideTimeoutRef = useRef(null);
 
   
   
-   const handleEnter = useCallback((list, type) => (e) => {
+   const handleEnter = useCallback((list, type)  => {
         return debounce((e) => {
           e.preventDefault();
           if(hideTimeoutRef.current){
@@ -41,7 +41,7 @@ const AppContextFun = ({children}) => {
 
   },[])
     
-    const handleLeave = useCallback((type) => (e) => {
+    const handleLeave = useCallback((type) => {
       return debounce((e) => {
         e.preventDefault();
         hideTimeoutRef.current = setTimeout(() => {

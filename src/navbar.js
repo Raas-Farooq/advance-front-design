@@ -1,6 +1,8 @@
 import React from 'react';
 import styles from './local.module.css';
 import List from './list';
+import {FaBars, FaYoutube} from 'react-icons/fa';
+
 import { useGlobalContext } from './AppContext';
 
 
@@ -9,7 +11,7 @@ function Navbar(){
     const globalData = useGlobalContext();
     const {isAboutList, isPaymentList, isProductList} = globalData;
     const isActive = isAboutList || isPaymentList || isProductList;
-    console.log("isActive: ", isActive)
+    console.log("isProductList: ", isProductList)
     const linksButtons = [
         {name:'Products', handleEnter:globalData.handleProductsEnter, handleLeave:globalData.handleProductsLeave},
         {name:'Payment', handleEnter:globalData.handlePaymentEnter, handleLeave:globalData.handlePaymentLeave},
@@ -20,18 +22,18 @@ function Navbar(){
 
         <div className={styles.App}>
             <div className='header'>
-            <h1 style={{color:"red"}}> Fight The SATAN</h1>
+            <h1 style={{color:"red"}} className={styles.motto}> Fight The SATAN</h1>
             </div>
         
-    
-            <div className="btns">
+            
+            <div className={styles.btns}>
     
             
                 {linksButtons.map(link => 
                    
                     <button 
                     className={`${styles.btnGap} ${styles.menuBtn} btn btn-danger` }
-                    onMouseOver={link.handleEnter}
+                    onMouseEnter={link.handleEnter}
                     onMouseLeave={link.handleLeave}
                     >{link.name}</button>
                     
@@ -47,8 +49,9 @@ function Navbar(){
             </div>
 
             <div>
-                <button > Sign In</button>
+                <button className={styles.signIn}> Sign In</button>
             </div>
+            <div className={styles.menuBar}><FaBars /></div>
         </div>
   
     )
