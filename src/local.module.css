@@ -12,7 +12,11 @@
     z-index: 2; 
     margin-top:20px;
     gap:100px;
-    background-color: deepskyblue;
+
+  }
+  .motto{
+    background-color: black;
+    padding:5px;
   }
   
   .App-logo {
@@ -40,6 +44,13 @@
     background-color: white;
     transition: opacity 0.3s ease;
   }
+  .emptyList {
+    display: none;
+    opacity: 0;
+    height: 0;
+    background-color: transparent;
+    transition: opacity 0.3s ease, height 0.3s ease;
+  }
   .checking{
     color: rgb(102, 198, 121);
   }
@@ -64,7 +75,7 @@
   .menuBar{
     display:none;
   }
-  @media only screen and (max-width:930px){
+  @media only screen and (max-width:935px){
     .App{
     
       gap:60px;
@@ -91,9 +102,12 @@
       font-size:20px;
     }
   }
-  
-  @media only screen and (max-width : 640px){
-    .btns{
+
+  /* .hideBtns{
+    display:none;
+  } */
+  @media only screen and (max-width : 645px){
+    .hideBtns{
       display:none;
     }
     .signIn{
@@ -101,7 +115,8 @@
     }
     .menuBar{
       display:block;
-      margin-right:40px
+      margin-right:40px;
+      color:white
     }
     .App{
       position:absolute;
@@ -110,7 +125,7 @@
       left:0;
       display:flex;
       justify-content: space-between;
-      background-color: cadetblue;
+      
     }
   }
   

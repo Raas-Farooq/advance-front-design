@@ -29,11 +29,14 @@ const AppContextFun = ({children}) => {
    const handleEnter = useCallback((list, type)  => {
         return debounce((e) => {
           e.preventDefault();
+          console.log("handle Enter useContext Runs")
           if(hideTimeoutRef.current){
             clearTimeout(hideTimeoutRef.current);
           }
           hideTimeoutRef.current = setTimeout(() => {
             setLinkAvailability((prevState) => ({...prevState, [type]:true}))
+            // myList.styles.backgroundColor='none';
+            // myList.styles.height=0;
             setMyList(list);   
           
           },100);

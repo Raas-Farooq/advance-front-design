@@ -1,20 +1,27 @@
 import myStyles from './local.module.css';
-import { useGlobalContext, useState} from './AppContext'; 
+import { useGlobalContext} from './AppContext'; 
+import React, {useState,useEffect} from 'react';
 
 
 function List(){
     const globalStates = useGlobalContext();
+    const [stateActive, setStateActive] = useState(false);
 
     const {isAboutList, isProductList, isPaymentList, myList} = globalStates;
 
     const stateTrue = isAboutList || isProductList || isPaymentList;
 
-    console.log("stateTrue", stateTrue);
+    useEffect(() => {
+        setStateActive(stateTrue);
+        console.log("stateActive: ", stateActive)
+    }, [stateTrue, stateActive])
     return (
         <>
-            {(globalStates.isProductList || globalStates.isPaymentList || globalStates.isAboutList) && 
+            {(stateTrue) && 
+            
             <ul 
-                    className={myStyles.list} 
+                    
+                    className={stateActive ? myStyles.list : myStyles.emptyList} 
                     onMouseOver={(e) => {
                         if(isProductList) globalStates.handleProductsEnter(e);
                         if(isPaymentList) globalStates.handlePaymentEnter(e);
@@ -26,7 +33,7 @@ function List(){
                         || globalStates.isPaymentList && globalStates.handlePaymentLeave 
                         || globalStates.isAboutList && globalStates.handleAboutLeave}
                     >
-                    {globalStates.myList.map(item => {
+                    {myList.map(item => {
                     return <li 
                     key={item} 
                     className={myStyles.liItem}
