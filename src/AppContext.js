@@ -15,44 +15,43 @@ function debounce(fn, delay) {
 
 
 const AppContextFun = ({children}) => {
-    const [linkAvailability, setLinkAvailability] = useState({
-      isProductList: false, 
-      isPaymentList:false, 
-      isAboutList:false
-    });
+    const [isPaymentList, setPaymentList] = useState(false);
+    const [isProductList, setProductList] = useState(false);
+    const [isAboutList, setAboutList] = useState(false);
     const [isActive, setIsActive] = useState(false);
     const [myList, setMyList] = useState([]);
-    const hideTimeoutRef = useRef(null);
+    const timeoutRef = useRef(null);
 
   
   
    const handleEnter = useCallback((list, type)  => {
-        return debounce((e) => {
-          e.preventDefault();
-          console.log("handle Enter useContext Runs")
-          if(hideTimeoutRef.current){
-            clearTimeout(hideTimeoutRef.current);
-          }
-          hideTimeoutRef.current = setTimeout(() => {
-            setLinkAvailability((prevState) => ({...prevState, [type]:true}))
-            // myList.styles.backgroundColor='none';
-            // myList.styles.height=0;
-            setMyList(list);   
-          
-          },100);
-        },150)
-
-  },[])
+    clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => {
+      switch (type) {
+        case 'product':
+          setProductList(true);
+          break;
+        case 'payment':
+          setPaymentList(true);
+          break;
+        case 'about':
+          setAboutList(true);
+          break;
+      }
+      setMyList(list);
+    }, 100);
+  })
     
-    const handleLeave = useCallback((type) => {
-      return debounce((e) => {
-        e.preventDefault();
-        hideTimeoutRef.current = setTimeout(() => {
-          setMyList([])
-          setLinkAvailability((prevState) => ({...prevState, [type]: false}))  
-        },200);
-      }, 150)   
-}, []);
+    const handleMouseLeave = ()=> {
+      
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => {
+        setProductList(false);
+        setPaymentList(false);
+        setAboutList(false);
+        setMyList([]);
+      }, 150);
+};
 
 
 
@@ -60,7 +59,7 @@ const AppContextFun = ({children}) => {
 useEffect(() => {
   return () => {
 
-    if (hideTimeoutRef.current) clearTimeout(hideTimeoutRef.current);
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
   };
 }, []);
 
@@ -69,14 +68,18 @@ useEffect(() => {
     return <AppContext.Provider value=
     {{
 
-      ...linkAvailability,
+      isProductList,
+      isPaymentList,
+      isAboutList,
       myList,
-      handleProductsEnter: handleEnter(['Apples', 'Adversity', 'GoingOn', 'Present'],'isProductList'),
-      handleProductsLeave:handleLeave('isProductList'),
-      handleAboutEnter: handleEnter(['Personal Goals', 'Strengths', 'Weaknesses', 'Being There'],'isAboutList'),
-      handlePaymentEnter:handleEnter(['Tiger', 'Belief', 'Action', 'Being There'],'isPaymentList'),
-      handleAboutLeave:handleLeave('isAboutList'),
-      handlePaymentLeave:handleLeave('isPaymentList'),
+      handleProductsEnter:() => handleEnter(['Apples', 'Adversity', 'GoingOn', 'Present'],'product'),
+      handleAboutEnter: () => handleEnter(['Personal Goals', 'Strengths', 'Weaknesses', 'Being There'],'about'),
+      handlePaymentEnter:() => handleEnter(['Tiger', 'Belief', 'Action', 'Being There'],'payment'),
+      handleMouseLeave,
+      setProductList,
+      setAboutList,
+      setPaymentList,
+      setMyList
       
     }}> {children} </AppContext.Provider>
 

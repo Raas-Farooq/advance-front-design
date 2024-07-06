@@ -30,6 +30,9 @@
     align-items: center; */
     gap:30px;
   }
+  .hideMotto{
+    display:none;
+  }
   .list{
     display:flex;
     list-style: none;
@@ -38,18 +41,20 @@
     width:fit-content;
     justify-content: center;
     align-items: center;
-    height:100px;
+    height:fit-content;
     border-radius:5px;
     margin-left: 20%;
     background-color: white;
     transition: opacity 0.3s ease;
+    
   }
-  .emptyList {
-    display: none;
-    opacity: 0;
-    height: 0;
-    background-color: transparent;
-    transition: opacity 0.3s ease, height 0.3s ease;
+  .fullList {
+    list-style:none;
+    display:flex;
+    flex-direction: column;
+    background-color: white;
+    width:450px;
+    height:600px;
   }
   .checking{
     color: rgb(102, 198, 121);
@@ -60,11 +65,12 @@
     transition:all 0.3s ease;
     /* margin-top:20px; */
   }
-  .btnGap{
-    margin-left:45px;
+ 
+  .hideEachBtn{
+    display:none
   }
-
   .menuBtn{
+    margin-left:40px;
     transition: all 0.3s ease;
   }
   @media (prefers-reduced-motion: no-preference) {
@@ -74,6 +80,7 @@
   }
   .menuBar{
     display:none;
+    height:fit-content;
   }
   @media only screen and (max-width:935px){
     .App{
@@ -93,7 +100,7 @@
     
     }
     .btns{
-      gap:15px
+      gap:10px
     }
     .btnGap{
       width:fit-content;

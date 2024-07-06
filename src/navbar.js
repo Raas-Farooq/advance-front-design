@@ -1,61 +1,110 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState,useEffect} from 'react';
 import styles from './local.module.css';
 import List from './list';
-import {FaBars, FaYoutube} from 'react-icons/fa';
-
+import {FaBars, FaYoutube, FaTimes} from 'react-icons/fa';
+import windowSize from './windowSize.js';
 import { useGlobalContext } from './AppContext';
 
 
 function Navbar(){
     
     const globalData = useGlobalContext();
+    const window = windowSize();
+   
+    const [btnsVisible, setBtnsVisible] = useState(true);
+    const [hideOthers, setHideOthers] = useState(false);
     const {isAboutList, isPaymentList, isProductList} = globalData;
     const isActive = isAboutList || isPaymentList || isProductList;
     const btns = useRef(null);
-    const [menuVisible, setMenuVisible] = useState(false);
+    let [menuVisible, setMenuVisible] = useState(false);
+    const IndividualBtn = useRef(null);
+
 
     const linksButtons = [
-        {name:'Products', handleEnter:globalData.handleProductsEnter, handleLeave:globalData.handleProductsLeave},
-        {name:'Payment', handleEnter:globalData.handlePaymentEnter, handleLeave:globalData.handlePaymentLeave},
-        {name:'About', handleEnter:globalData.handleAboutEnter, handleLeave:globalData.handleAboutLeave}
+        {name:'Products', handleEnter:globalData.handleProductsEnter},
+        {name:'Payment', handleEnter:globalData.handlePaymentEnter},
+        {name:'About', handleEnter:globalData.handleAboutEnter}
     ] 
+
+    useEffect(() => {
+        console.log(
+            "menuVisible Inside useEffect: ", menuVisible
+        )
+        if(window.width > 640){
+            globalData.handleMouseLeave();
+            setMenuVisible(false);
+            setHideOthers(false);
+            if(IndividualBtn.current){
+                setBtnsVisible(true);
+            }
+        }
+        else{
+            setHideOthers(true);
+            setBtnsVisible(false);
+        }
+        
+        
+    }, [window.width,btnsVisible, menuVisible])
+
+    // const menuVisibility = (visiblility) => {
+    //     console.log("visiblility inside Navbar ", visiblility);
+    //     setMenuVisible(visiblility);
+    // }
+
 
     const handleMenuClick = (e) => {
         e.preventDefault();
-        globalData.handleAboutEnter(e);
+        // globalData.handleAboutEnter(e);
         
-        setMenuVisible(!menuVisible);
-      
-        linksButtons.map(btn => btn.handleEnter);
-        console.log("btns.current.classList", btns.current.classList);
-        console.log("isProductList: ", isProductList);
-        console.log("isAboutList: ", isAboutList)
+        setMenuVisible((prev) => {
+            const updatedMenuVisible = !prev;
+            console.log("updated Menu: ", updatedMenuVisible);
+            if(updatedMenuVisible){
+                globalData.setProductList(true);
+                globalData.setPaymentList(true);
+                globalData.setAboutList(true);
+        
+                
+                // Set myList to include all items
+                globalData.setMyList([
+                    'Apples', 'Adversity', 'GoingOn', 'Present',
+                    'Believe', 'Effort', 'MassiveAction', 'Middle Way', 'Be Patient',
+                    'Personal Goals', 'Strengths', 'Weaknesses', 'Being There'
+                ]);
+            }
+            return updatedMenuVisible;
+    });
+       
+        // linksButtons.forEach(btn => btn.handleEnter(e));
+        // console.log("btns.current.classList", btns.current.classList);
+        // console.log("isProductList: ", isProductList);
+        // console.log("isAboutList: ", isAboutList)
     }
     return (
 
         <div className={styles.App}>
             <div className='header'>
-            <h1 style={{color:"red"}} className={styles.motto}> Fight The SATAN</h1>
+            <h1 style={{color:"red"}} className={hideOthers ? styles.hideMotto: styles.motto }> Fight The SATAN</h1>
             </div>
         
             
-            <div ref={btns} className={`${styles.btns} ${menuVisible? '' : styles.hideBtns}`}>
+            <div ref={btns} className={` ${menuVisible? `${styles.btns}`: styles.hideBtns}`}>
     
             
                 {linksButtons.map(link => 
                    
                     <button 
-                    className={`${styles.btnGap} ${styles.menuBtn} btn btn-danger` }
+                    ref={IndividualBtn}
+                    className={`${btnsVisible ?  `${styles.menuBtn} btn btn-warning `: styles.hideEachBtn}` }
                     onMouseEnter={link.handleEnter}
-                    onMouseLeave={link.handleLeave}
+                    onMouseLeave={globalData.handleMouseLeave}
                     >{link.name}</button>
                     
                     
                 )}
 
                 <span style={{display:'inline'}}>
-                    {isActive &&  <List isProductList={globalData.isProductList}
-                    myList={globalData.myList} />}
+                    {isActive &&  <List myList={globalData.myList} menuVisible={menuVisible} />}
                     
                 </span>
                 
@@ -64,7 +113,7 @@ function Navbar(){
             <div>
                 <button className={styles.signIn}> Sign In</button>
             </div>
-            <div className={`${styles.menuBar} btn btn-info`} onClick={handleMenuClick}><FaBars /></div>
+            <div className={`${styles.menuBar} btn btn-info`} onClick={handleMenuClick}>{menuVisible ? <FaTimes /> : <FaBars />}</div>
         </div>
   
     )
@@ -72,22 +121,3 @@ function Navbar(){
 
 export default Navbar;
 
-// const linksButtons = [
-//     {name:'Products', handleEnter:globalData.handleProductsEnter, handleLeave:globalData.handleProductsLeave},
-//     {name:'Payment', handleEnter:globalData.handlePaymentEnter, handleLeave:globalData.handlePaymentLeave},
-//     {name:'About', handleEnter:globalData.handleAboutEnter, handleLeave:globalData.handleAboutLeave}
-// ] 
-
-// const handleMenuClick = (e) => {
-//     e.preventDefault();
-//     globalData.handleAboutEnter(e);
-    
-//     setMenuVisible(!menuVisible);
-  
-//     linksButtons.map(btn => btn.handleEnter);
-//     console.log("btns.current.classList", btns.current.classList);
-//     console.log("isProductList: ", isProductList);
-//     console.log("isAboutList: ", isAboutList)
-// }
-
-// when the menuBar button is clicked i'm trying to show all the lists by this line 'linksButtons.map(btn => btn.handleEnter);' since 'linksButtons' contains all the 'functions' but it is not working whereas this line of cod3e 'globalData.handleAboutEnter(e);' is indeed working which is showing the list related to 'About'
