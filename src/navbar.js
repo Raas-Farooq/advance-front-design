@@ -10,13 +10,13 @@ function Navbar(){
     
     const globalData = useGlobalContext();
     const window = windowSize();
-   
+    const [menuWidth, setMenuWidth] = useState(0);
     const [btnsVisible, setBtnsVisible] = useState(true);
     const [hideOthers, setHideOthers] = useState(false);
-    const {isAboutList, isPaymentList, isProductList} = globalData;
+    const {isAboutList, isPaymentList, isProductList, menuVisible, setMenuVisible} = globalData;
     const isActive = isAboutList || isPaymentList || isProductList;
     const btns = useRef(null);
-    let [menuVisible, setMenuVisible] = useState(false);
+    
     const IndividualBtn = useRef(null);
 
 
@@ -30,7 +30,7 @@ function Navbar(){
         console.log(
             "menuVisible Inside useEffect: ", menuVisible
         )
-        if(window.width > 640){
+        if(window.width > 645){
             globalData.handleMouseLeave();
             setMenuVisible(false);
             setHideOthers(false);
@@ -42,14 +42,12 @@ function Navbar(){
             setHideOthers(true);
             setBtnsVisible(false);
         }
-        
+        if(menuVisible){
+            const updatedWidth = ( 80 / 100 ) * menuWidth;
+            setMenuWidth(updatedWidth);
+        }
         
     }, [window.width,btnsVisible, menuVisible])
-
-    // const menuVisibility = (visiblility) => {
-    //     console.log("visiblility inside Navbar ", visiblility);
-    //     setMenuVisible(visiblility);
-    // }
 
 
     const handleMenuClick = (e) => {
@@ -64,7 +62,10 @@ function Navbar(){
                 globalData.setPaymentList(true);
                 globalData.setAboutList(true);
         
+                const newWidth = (80 / 100) * window.width;
+                setMenuWidth(newWidth);
                 
+
                 // Set myList to include all items
                 globalData.setMyList([
                     'Apples', 'Adversity', 'GoingOn', 'Present',
@@ -73,27 +74,25 @@ function Navbar(){
                 ]);
             }
             return updatedMenuVisible;
-    });
-       
-        // linksButtons.forEach(btn => btn.handleEnter(e));
-        // console.log("btns.current.classList", btns.current.classList);
-        // console.log("isProductList: ", isProductList);
-        // console.log("isAboutList: ", isAboutList)
+        });
     }
+    
+    
     return (
 
         <div className={styles.App}>
             <div className='header'>
-            <h1 style={{color:"red"}} className={hideOthers ? styles.hideMotto: styles.motto }> Fight The SATAN</h1>
+            <h1 style={{color:"#FF0099"}} className={hideOthers ? styles.hideMotto: styles.motto }> Fight The SATAN</h1>
             </div>
         
             
             <div ref={btns} className={` ${menuVisible? `${styles.btns}`: styles.hideBtns}`}>
     
             
-                {linksButtons.map(link => 
+                {linksButtons.map((link,ind) => 
                    
                     <button 
+                    key={ind}
                     ref={IndividualBtn}
                     className={`${btnsVisible ?  `${styles.menuBtn} btn btn-warning `: styles.hideEachBtn}` }
                     onMouseEnter={link.handleEnter}
@@ -104,20 +103,19 @@ function Navbar(){
                 )}
 
                 <span style={{display:'inline'}}>
-                    {isActive &&  <List myList={globalData.myList} menuVisible={menuVisible} />}
-                    
+                    {isActive &&  <List myList={globalData.myList} menuVisible={menuVisible} menuWidth={menuWidth} />}   
                 </span>
                 
             </div>
 
             <div>
+    
                 <button className={styles.signIn}> Sign In</button>
             </div>
-            <div className={`${styles.menuBar} btn btn-info`} onClick={handleMenuClick}>{menuVisible ? <FaTimes /> : <FaBars />}</div>
+            <div className={menuVisible ? `${styles.closeBtn} btn btn-warning` : `${styles.menuBar} btn btn-warning`} onClick={handleMenuClick}>{menuVisible ? <FaTimes /> : <FaBars />}</div>
         </div>
   
     )
 }
 
-export default Navbar;
-
+export default Navbar

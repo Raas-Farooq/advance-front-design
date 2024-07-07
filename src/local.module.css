@@ -50,11 +50,28 @@
   }
   .fullList {
     list-style:none;
+    /* position:absolute;
+    top:30px;
+    right:30%; */
     display:flex;
     flex-direction: column;
     background-color: white;
-    width:450px;
+    z-index:10;
     height:600px;
+  }
+  .headingOne{
+    position:absolute;
+    z-index:3;
+    top:200px; 
+    color:#FF00FF; 
+    font-size:50px
+  }
+  .instruction{
+    position:absolute;
+    top:320px;
+    z-index:4;
+    color:#FFFF00;
+    width:550px
   }
   .checking{
     color: rgb(102, 198, 121);
@@ -91,6 +108,12 @@
     .btnGap{
       margin-left:30px;
     }
+    .motto{
+      font-size:26px
+    }
+    .menuBtn{
+      font-size:17px;
+    }
   }
 
   @media only screen 
@@ -106,7 +129,11 @@
       width:fit-content;
     }
     .motto{
-      font-size:20px;
+      font-size:18px;
+    }
+    .menuBtn{
+      margin-left:37px;
+      font-size: 15px;
     }
   }
 
@@ -122,8 +149,13 @@
     }
     .menuBar{
       display:block;
+      
       margin-right:40px;
       color:white
+    }
+    .closeBtn{
+      position: absolute;
+      right:18%;
     }
     .App{
       position:absolute;

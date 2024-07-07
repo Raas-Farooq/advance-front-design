@@ -19,8 +19,7 @@ function App() {
       
       <Navbar />
       <Body />
-      <div style={{height:"300px", backgroundColor:"red", width:"100%", position:"absolute", bottom:0}}>
-        </div>
+      
     </>
   );
 }

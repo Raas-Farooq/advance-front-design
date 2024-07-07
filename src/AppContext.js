@@ -3,15 +3,6 @@ import React, {useContext, useState, useEffect,useRef, useCallback} from 'react'
 
 const AppContext = React.createContext();
 
-function debounce(fn, delay) {
-  let timeoutId;
-  return function(...args) {
-    if (timeoutId) clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => {
-      fn(...args);
-    }, delay);
-  };
-}
 
 
 const AppContextFun = ({children}) => {
@@ -21,26 +12,62 @@ const AppContextFun = ({children}) => {
     const [isActive, setIsActive] = useState(false);
     const [myList, setMyList] = useState([]);
     const timeoutRef = useRef(null);
-
+    
+    let [menuVisible, setMenuVisible] = useState(false);
   
-  
-   const handleEnter = useCallback((list, type)  => {
+  const handleProductsEnter = (e) => {
     clearTimeout(timeoutRef.current);
     timeoutRef.current = setTimeout(() => {
-      switch (type) {
-        case 'product':
-          setProductList(true);
-          break;
-        case 'payment':
-          setPaymentList(true);
-          break;
-        case 'about':
+
+      setPaymentList(false);
+      setAboutList(false);
+      setProductList(true);
+      
+      setMyList((prev) => {
+        if(prev.length <=5 ){
+          return ['Apples', 'Adversity', 'GoingOn', 'Present'];
+        }
+
+        return prev;
+      });
+  
+    }, 100
+  )
+    
+  }
+  const handlePaymentEnter = (e) => {
+    clearTimeout(timeoutRef.current);
+    console.log("payment Runs");
+    timeoutRef.current = setTimeout(() => {
+      setPaymentList(true);
+      setAboutList(false);
+      setProductList(false);
+
+      setMyList(prev => {
+        if(prev.length <= 5){
+          return ['Tiger', 'Belief', 'Action', 'Being There']
+        }
+        return prev;
+      });
+    },100) 
+  }
+  const handleAboutEnter = (e) =>  {
+    clearTimeout(timeoutRef.current);
+    console.log("About Runs");
+    timeoutRef.current = setTimeout(() => {
+      setPaymentList(false);
+      setProductList(false);
+      setMyList((prev) => {
+        if(prev.length <= 5){
           setAboutList(true);
-          break;
-      }
-      setMyList(list);
-    }, 100);
-  })
+          return (['Personal Goals', 'Strengths', 'Weaknesses', 'Being There'])
+        }
+        return prev;
+      })
+      
+    },100)
+    
+  }
     
     const handleMouseLeave = ()=> {
       
@@ -57,24 +84,29 @@ const AppContextFun = ({children}) => {
 
 
 useEffect(() => {
+
+  
   return () => {
 
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
+
   };
-}, []);
+}, [myList]);
 
 
 
     return <AppContext.Provider value=
     {{
-
+      menuVisible,
+      setMenuVisible,
       isProductList,
       isPaymentList,
       isAboutList,
       myList,
-      handleProductsEnter:() => handleEnter(['Apples', 'Adversity', 'GoingOn', 'Present'],'product'),
-      handleAboutEnter: () => handleEnter(['Personal Goals', 'Strengths', 'Weaknesses', 'Being There'],'about'),
-      handlePaymentEnter:() => handleEnter(['Tiger', 'Belief', 'Action', 'Being There'],'payment'),
+      handleProductsEnter,
+      handlePaymentEnter,
+      handleAboutEnter,
       handleMouseLeave,
       setProductList,
       setAboutList,

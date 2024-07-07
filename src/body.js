@@ -1,9 +1,16 @@
 
+import {useGlobalContext} from './AppContext.js';
+import superStyles from './local.module.css';
+
+
 function Body() {
+
+  const allData = useGlobalContext();
+  const hide = allData.menuVisible;
+  
     return (
 
         <div style={{
-       
        position:'absolute',
        top:0,
        left:0,
@@ -18,6 +25,14 @@ function Body() {
          }}
          alt="Background"
        />
+      <div>
+        <h1 className={superStyles.headingOne} > {hide ? ' ' : 'Best Way of Life'} </h1>
+        <h1 style={{ position:'absolute', top:"260px", color:"#FF00FF" , fontSize:"50px"}}> {hide ? ' ': 'In The World' } </h1>
+      </div>
+      <div className={superStyles.instruction}>
+        <p> {hide ? '' : 'The benefits of adopting a contemplative practice—such as Prayer (Namaz), meditation, exercise/yoga, or journaling—have widespread effects not just on spirituality, but on physical and emotional health as well.'}</p>
+      </div>
+       
      </div>
         
 
